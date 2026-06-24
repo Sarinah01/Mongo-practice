@@ -1,0 +1,33 @@
+db.Task4.find({name:/\d$/})
+db.Task4.find({name:/^.{4,5}$/})
+db.Task4.find({name:/ric/})
+db.Task4.find({name: /^Eri..$/i})
+db.Task4.find({name: /an/})
+db.Task4.find({position :"Data Scientist"},[{$set :{salary:{$multiply: ["$salary",1.05]}}}])
+db.Task4.find({position :"Data Scientist"},[{$set :{salary:{$multiply: ["$salary",1.05]}}}])
+db.Task4.find({salary:{$lt:50000}},[{$set :{salary : {$mutliply :["$salary",1.10]}}}])
+db.Task4.find({$or:[{position: 'Software Developer' },{position:'Full Stack Developer'}], age:{$lt:30}})
+db.Task4.find({$or:[{position: 'Software Developer' },{position:'Full Stack Developer'}]})
+db.Task4.find({position :{$in :['Full Stack Developer','Software Developer']}})
+db.Task4.countDocuments({salary:{$gt :50000}})
+db.Task4.find({},{name:1,position:1,_id:0})
+db.Task4.find({salary : { $gt :50000} })
+db.Task4.find({},{name:1,salary:1,_id:0}).sort({salary:-1})
+db.Task4.find({},{name:1,ssalary:1,_id:0}).sort({salary:-1})
+db.Task4.find({},{name:1,_id:0}).sort({salary:-1})
+db.Task4.find({age:{$gte :25, $lte:40}},{name:1,_id:0})
+db.Task4.find()
+db.Task4.find({position:"Full Stack Developer"})
+
+
+Map following SQL queries to MongoDB query:
+
+(1) update employee set name="TTT" where age not in {12,33,44,55}
+
+(2) select count(*) from employee where age<>23
+
+(3) update employee set age=age+10
+
+db.student.updateMany({age:{$nin :[12,33,44,55]}, {$set:{name:"TTT"}})
+db.student.find({age : {$ne : 23}}).count()
+db.student.updateMany({},{$inc : {age:10}})

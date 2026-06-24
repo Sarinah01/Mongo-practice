@@ -1,0 +1,127 @@
+mongod --version
+
+mongosh
+
+-- test> show dbs                   // to show all database
+-- test> use ljub2                  // to create database 
+-- ljub2> use test                  // return to test database 
+-- ljub2> db.dropDatabase()         // to delete database
+
+
+-- ljub2> db.createCollection("student")             // to create table in ljub2 database
+-- ljub2> db.student.renameCollection("students")    // to rename table's name
+-- ljub2> db.products.drop()                         // to delete a table
+-- ljub2> show collections                           // to show all tables
+
+
+
+===========================================================================================================================
+
+                                                   Insert data
+    
+===========================================================================================================================
+
+-- ljub2> db.students.insertOne({name:"ABC",age:15,marks:83})    // to insert one data (one row)
+
+-- db.students.insertMany([{name:"PQR",age:17,city:"Ahmedabad",marks:75},{name:"XYZ",age:14,city:"Surat",marks:89},{name:"VWX",age:23,city:"Vadodara"}])
+// to insert many data (many rows)
+
+
+
+===========================================================================================================================
+
+                                                   Find data
+    
+===========================================================================================================================
+    
+
+-- ljub2> db.students.find()                         // to see all students data (rows)
+-- ljub2> db.students.findOne()                      // it returns first data (row)
+-- ljub2> db.students.find({name:"ABC"})             // to find  student with name:"ABC"
+-- ljub2> db.students.find({name:"ABC",city:"Ahmedabad"})   // to find  student with name:"ABC" and  city:"Ahmedabad"
+
+-- syntex --  db.collection.find(query/filter/condition,projection)
+
+===================================================================================
+
+-- ljub2> db.students.find({},{age:1})                      // id is bydefault always show so we need to set it to 0
+[
+  { _id: ObjectId("6a38b56cf02caf774ac245d3"), age: 15 },
+  { _id: ObjectId("6a38b6bdf02caf774ac245d4"), age: 17 },
+  { _id: ObjectId("6a38b6bdf02caf774ac245d5"), age: 14 },
+  { _id: ObjectId("6a38b6bdf02caf774ac245d6"), age: 23 }
+]
+
+===================================================================================
+
+-- ljub2> db.students.find({},{age:1,_id:0})               // it shows age because we give it's value 1 and also accept all coulmn value default 0
+[ { age: 15 }, { age: 17 }, { age: 14 }, { age: 23 } ]
+
+===================================================================================
+
+-- ljub2> db.students.find({},{age:1,_id:0,city:1})        
+[
+  { age: 15 },
+  { age: 17, city: 'Ahmedabad' },
+  { age: 14, city: 'Surat' },
+  { age: 23, city: 'Vadodara' }
+]
+
+===================================================================================
+
+// Ex-->  it shows a city of that student whose name is "VWX"
+
+-- ljub2> db.students.find({name:"VWX"},{city:1,_id:0})   
+[ { city: 'Vadodara' } ]      
+
+=====================================================================================
+
+// Ex-->  Display name and marks of all the students who belongs to surat
+
+-- ljub2> db.students.find({city:"Surat"},{_id:0,name:1,marks:1})  
+[
+  { name: 'XYZ', marks: 89 },
+  { name: 'XYZ' },
+  { name: 'PQR', marks: 93 }
+]
+
+=====================================================================================
+
+// Ex--> it gives one data by skip 2 datas (skips 2 rows and give 1 next row)
+
+-- ljub2> db.students.find({city:"Surat"}).limit(1).skip(2)
+[
+  {
+    _id: ObjectId("6a38bd1ef02caf774ac245d9"),
+    name: 'PQR',
+    age: 13,
+    city: 'Surat',
+    marks: 93
+  }
+]
+
+=====================================================================================
+
+
+
+
+===========================================================================================================================
+
+                                                   Update data
+    
+===========================================================================================================================
+
+-- ljub2> db.students.updateOne({marks:83},{$set;{marks:82}})   // it upadte one colums marks to 82 where marks is 83
+-- ljub2> db.students.updateMany({marks:83},{$set;{marks:82}})  // // it upadte all colums marks to 82 where marks is 83
+-- ljub2> db.student.updateOne({name:"PQR",marks:96},{$set:{name:"XYZ",age:18}},{upsert:true})     // it upadate value if found name:"PQR",marks:96 in database else it insert name:"XYZ",age:18 as a new row
+
+
+===========================================================================================================================
+
+                                                   Delete data
+    
+===========================================================================================================================
+
+
+-- ljub2> db.students.deleteOne({marks:83})         // it deletes one row where marks:83
+-- ljub2> db.students.deleteMany({marks:83})        // it deletes all row where marks:83
